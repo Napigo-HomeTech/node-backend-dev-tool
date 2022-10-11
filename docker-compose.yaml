@@ -1,0 +1,51 @@
+version: "2.2"
+
+networks:
+  kong-net:
+      external: false
+  npg-net:
+      driver: bridge
+
+services:
+  kong:
+    container_name: "kong_api_gateway"
+    build:
+      context: ./kong-gateway
+      dockerfile: Dockerfile
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stdout
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+    ports:
+      - "8001:8001"
+      - "8444:8444"
+      - "8000:8000"
+      - "8443:8443"
+      - "9080:9080"
+      - "9081:9081"
+    networks:
+      - kong-net
+      - npg-net
+
+
+  npg-mongo-db:
+    container_name: npg-mongo-db
+    image: mongo
+    hostname: "npg-mongo-db"
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME="NPG_ROOT_DB"
+      - MONGO_INITDB_ROOT_PASSWORD="NPG_ROOT_DP_PASS_2022"
+    ports:
+      - 27017:27017
+    networks:
+      - npg-net
+    volumes:
+      - ./data/db
+
+
+
+

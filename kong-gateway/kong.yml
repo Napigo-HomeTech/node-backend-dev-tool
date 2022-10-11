@@ -1,0 +1,12 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+ - name: "github_test"
+   url: "https://github.com/"
+   protocol: "http"
+   routes:
+     - name : "github-routes"
+       paths:
+         - "/napi-git"
+       strip_path: true

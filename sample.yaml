@@ -1,0 +1,81 @@
+version: "2.2"
+
+networks:
+    backend:
+    node-network:
+        driver: bridge
+
+
+services:
+
+    bam_verdaccio:
+        image: verdaccio/verdaccio
+        container_name: "bam_verdaccio"
+        networks:
+          - node-network
+        environment:
+          - VERDACCIO_PORT=4873
+        ports:
+          - "4873:4873"
+
+
+    bam_auth:
+        container_name: bam_auth
+        build:
+            context: ./firebase-emu
+            dockerfile: Dockerfile
+        environment:
+          PROJECT_ID: "${PROJECT_ID}"
+          FIREBASE_AUTH_TOKEN: "${FIREBASE_AUTH_TOKEN}"
+        # volumes:
+        #     - ./firebase/emulators/:/opt/workspace:cached
+        #     - ./firebase/bin/:/root/.cache:cached
+        #     - ./firebase/config/:/root/.config:cached
+        ports:
+            - 4000:4000 # Emulator Suite UI
+            - 9005:9005 # firebase login
+            - 9099:9099 # firebase config
+        working_dir: /opt/workspace
+        networks:
+            - backend
+        command: bash
+        tty: true
+
+    bam_redis:
+        container_name: 'bam_redis'
+        image: "redis:alpine"
+        command: "redis-server --requirepass myredispassword"
+        environment:
+            - REDIS_REPLICATION_MODE=master
+        ports:
+            - 6379:6379
+  
+            
+    bam_mongodb:
+        container_name: bam_mongodb  
+        build:
+            context: ./mongodb
+            dockerfile: Dockerfile
+        hostname: "bam_mongo"
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: BAM_MONGO_SA
+            MONGO_INITDB_ROOT_PASSWORD: BAM_MONGO_SA_2022  
+        ports:
+            - 27017:27017
+        networks:
+            - backend
+        volumes:
+            - ./data/db
+    
+    
+    bam_uam:
+        container_name: bam_uam
+        build: ../bam-uam
+        restart: always
+        hostname: "bam_uam"
+        ports:
+            - 7344:7344
+        volumes:
+            - ../bam-uam:/app
+

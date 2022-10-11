@@ -1,0 +1,18 @@
+{
+    "_format_version": "3.0",
+    "_transform": true,
+    "services": [
+         {
+            "url": "https://github.com/",
+            "name": "github_test",
+            "protocol": "http",
+            "routes": [
+                {
+                    "name": "example_root",
+                    "paths": ["/napi-git"],
+                    "strip_path": true
+                }
+            ]
+         }
+    ]
+}
