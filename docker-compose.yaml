@@ -36,9 +36,9 @@ services:
     image: mongo
     hostname: "npg-mongo-db"
     restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME="NPG_ROOT_DB"
-      - MONGO_INITDB_ROOT_PASSWORD="NPG_ROOT_DP_PASS_2022"
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME="NPG_ROOT_DB"
+    #   - MONGO_INITDB_ROOT_PASSWORD="NPG_ROOT_DP_PASS_2022"
     ports:
       - 27017:27017
     networks:
