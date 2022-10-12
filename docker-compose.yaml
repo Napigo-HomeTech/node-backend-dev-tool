@@ -46,6 +46,18 @@ services:
     volumes:
       - ./data/db
 
+  npg-finance-service:
+    container_name: npg-finance-service
+    build: ../node-finance-service
+    restart: always
+    hostname: finance-service
+    ports:
+      - 4000:4000
+    networks:
+      - npg-net
+    volumes:
+      - ../node-finance-service:/app
+
 
 
 
