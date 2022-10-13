@@ -2,7 +2,7 @@
 services=(
     "kong"
     "npg-mongo-db"
-    "npg-finance-servic"
+    "npg-finance-service"
 
 )
 
