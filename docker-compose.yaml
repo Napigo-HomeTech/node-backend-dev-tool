@@ -4,11 +4,13 @@ networks:
   kong-net:
       external: false
   npg-net:
+      internal: true
       driver: bridge
 
 services:
   kong:
     container_name: "kong_api_gateway"
+    image: kong_api_gateway
     build:
       context: ./kong-gateway
       dockerfile: Dockerfile
@@ -46,18 +48,19 @@ services:
     volumes:
       - ./data/db
 
-  npg-finance-service:
-    container_name: npg-finance-service
-    build: ../node-finance-service
+  go-finance-service:
+    container_name: go-finance-service
+    image: go-finance-service
+    build:
+      context: ../go-finance-service
+      dockerfile: Dockerfile
     restart: always
     hostname: finance-service
+    environment:
+      - SERVICE_NAME=finance-service
     ports:
       - 4000:4000
     networks:
       - npg-net
-    volumes:
-      - ../node-finance-service:/app
-
-
 
 

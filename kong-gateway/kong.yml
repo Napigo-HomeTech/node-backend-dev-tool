@@ -2,11 +2,12 @@ _format_version: "3.0"
 _transform: true
 
 services:
- - name: "github_test"
-   url: "https://github.com/"
+ - name: "go-finance-service"
+   host: "go-finance-service"
    protocol: "http"
+   path: '/'
    routes:
-     - name : "github-routes"
+     - name : "finance-service"
        paths:
-         - "/napi-git"
+         - "/finance-service"
        strip_path: true
