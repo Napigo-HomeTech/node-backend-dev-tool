@@ -1,9 +1,10 @@
 _format_version: "3.0"
 _transform: true
 
+
 services:
- - name: "go-finance-service"
-   host: "go-finance-service"
+ - name: "finance-service"
+   host: "finance-service"
    protocol: "http"
    path: '/'
    routes:
@@ -11,3 +12,29 @@ services:
        paths:
          - "/finance-service"
        strip_path: true
+
+ - name: "account-service"
+   host: "account-service"
+   protocol: "http"
+   path: '/'
+   routes:
+     - name : "account-service"
+       paths:
+         - "/account-service"
+       strip_path: true
+
+plugins:
+  - name: jwt
+    route: finance-service
+    enabled: true
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+
+consumers:
+  - username: napigo-web
+    jwt_secrets:
+      - algorithm: "HS256"
+        key: "NAPIGO-JWT-KEY"
+        secret: "NAPIGO-JWT-SECRETS" 

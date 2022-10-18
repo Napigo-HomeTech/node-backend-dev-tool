@@ -47,10 +47,25 @@ services:
       - npg-net
     volumes:
       - ./data/db
+  
+  account-service:
+    container_name: account-service
+    image: account-service
+    build:
+      context: ../go-account-service
+      dockerfile: Dockerfile
+    restart: always
+    hostname: account-service
+    environment:
+      - SERVICE-NAME=account-service
+    ports:
+      - 80:80
+    networks:
+      - npg-net
 
-  go-finance-service:
-    container_name: go-finance-service
-    image: go-finance-service
+  finance-service:
+    container_name: finance-service
+    image: finance-service
     build:
       context: ../go-finance-service
       dockerfile: Dockerfile
@@ -59,7 +74,7 @@ services:
     environment:
       - SERVICE_NAME=finance-service
     ports:
-      - 4000:4000
+      - 80:80
     networks:
       - npg-net
 

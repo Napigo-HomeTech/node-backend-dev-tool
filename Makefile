@@ -31,6 +31,6 @@ clean-all:
 	docker image prune --all -f
 	docker volume prune -f
 
-clean-restart-all:
+clean-rebuild:
 	make clean-all
 	make start-all
