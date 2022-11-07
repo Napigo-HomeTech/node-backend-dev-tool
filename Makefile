@@ -1,24 +1,13 @@
-start-all:
-	docker-compose up -d;
-
-stop-all:
-	docker-compose down
-
-restart: docker.stop-all docker.start-all
-
-
-rebuild:
-	echo "Rebuilding container : $(NAME)"
-	docker-compose kill $(NAME)
-	docker-compose up -d --build $(NAME)
-
-
 ## For restaring the entire cluster right from this repo itself
-start-all:
+up-all:
 	docker-compose  up -d
-stop-all:
+down-all:
 	docker-compose down
 
+start-all:
+	docker-compose start
+stop-all:
+	docker-compose stop
 restart-all:
 	docker-compose down
 	docker-compose up -d
