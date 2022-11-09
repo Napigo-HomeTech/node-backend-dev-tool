@@ -3,10 +3,21 @@ _transform: true
 
 
 services:
+ - name: npg-account-service
+   host: npg-account-service
+   protocol: http
+   path: /
+   port: 6000
+   routes:
+     - name : npg-account-service
+       paths:
+         - /account-service
+       strip_path: true
+
  - name: npg-finance-service
    host: npg-finance-service
    protocol: http
-   port: 4001
+   port: 6001
    path: /
    routes:
      - name : npg-finance-service
@@ -14,16 +25,6 @@ services:
          - /finance-service
        strip_path: true
 
- - name: npg-account-service
-   host: npg-account-service
-   protocol: http
-   path: /
-   port: 4000
-   routes:
-     - name : npg-account-service
-       paths:
-         - /account-service
-       strip_path: true
 
 plugins:
   - name: jwt

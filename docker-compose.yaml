@@ -57,8 +57,8 @@ services:
     hostname: "npg-mongo-db"
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME="NPG_ROOT_DB"
-      - MONGO_INITDB_ROOT_PASSWORD="NPG_ROOT_DP_PASS_2022"
+      - MONGO_INITDB_ROOT_USERNAME=NPG_ROOT_DB
+      - MONGO_INITDB_ROOT_PASSWORD=NPG_ROOT_DP_PASS_2022
     ports:
       - 27017:27017
     networks:
@@ -78,7 +78,7 @@ services:
     depends_on:
       - npg-mongo-db
     ports:
-      - 4000:4000
+      - 6000:6000
     volumes:
       - ../npg-account-service:/app
     networks:
@@ -86,9 +86,8 @@ services:
     environment:
       - SERVICE_NAME=account-service
       - ENVIRONMENT=development
-      - DATABASE_NAME=npg-account-db
-      - DATABASE_URI=mongodb://npg-mongo-db:27017
-      - SERVICE_PORT=4000
+      - DATABASE_DOMAIN=npg-mongo-db
+      - SERVICE_PORT=6000
       - LOG_WITH_COLOR=true
       - LOG_LEVEL=verbose
 
@@ -103,7 +102,7 @@ services:
     depends_on:
       - npg-mongo-db
     ports:
-      - 4001:4001
+      - 6001:6001
     volumes:
       - ../npg-finance-service:/app
     networks:
@@ -111,9 +110,8 @@ services:
     environment:
       - SERVICE_NAME=finance-service
       - ENVIRONMENT=development
-      - DATABASE_NAME=npg-finance-db
-      - DATABASE_URI=mongodb://npg-mongo-db:27017
-      - SERVICE_PORT=4001
+      - DATABASE_DOMAIN=npg-mongo-db
+      - SERVICE_PORT=6001
       - LOG_WITH_COLOR=true
       - LOG_LEVEL=verbose
 
