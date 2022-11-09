@@ -3,29 +3,31 @@ _transform: true
 
 
 services:
- - name: "finance-service"
-   host: "finance-service"
-   protocol: "http"
-   path: '/'
+ - name: npg-finance-service
+   host: npg-finance-service
+   protocol: http
+   port: 4001
+   path: /
    routes:
-     - name : "finance-service"
+     - name : npg-finance-service
        paths:
-         - "/finance-service"
+         - /finance-service
        strip_path: true
 
- - name: "account-service"
-   host: "account-service"
-   protocol: "http"
-   path: '/'
+ - name: npg-account-service
+   host: npg-account-service
+   protocol: http
+   path: /
+   port: 4000
    routes:
-     - name : "account-service"
+     - name : npg-account-service
        paths:
-         - "/account-service"
+         - /account-service
        strip_path: true
 
 plugins:
   - name: jwt
-    route: finance-service
+    route: npg-finance-service
     enabled: true
     config:
       key_claim_name: kid
@@ -36,5 +38,5 @@ consumers:
   - username: napigo-web
     jwt_secrets:
       - algorithm: "HS256"
-        key: "NAPIGO-JWT-KEY"
-        secret: "NAPIGO-JWT-SECRETS" 
+        key: "vzr3KrSf01bju6UccR88b5ZAe1mfu5uc"
+        secret: "napigo-dev-jwt-secret" 

@@ -33,6 +33,22 @@ services:
     networks:
       - kong-net
       - npg-net
+  
+  npg-vault:
+    container_name: npg-vault
+    image: vault:latest
+    ports:
+      - 8201:8201
+      - 8200:8200
+    environment:
+      - VAULT_API_ADDR=http://0.0.0.0:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=NAPIGO-ROOT-TOKEN
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - npg-local-net
+      - npg-net
+
 
 
   npg-mongo-db:
@@ -51,6 +67,31 @@ services:
     volumes:
       - ./data/db
 
+  npg-account-service:
+    container_name: npg-account-service
+    image: npg-account-service
+    build:
+      context: ../npg-account-service
+      dockerfile: Dockerfile.dev
+    hostname: npg-account-service
+    restart: always
+    depends_on:
+      - npg-mongo-db
+    ports:
+      - 4000:4000
+    volumes:
+      - ../npg-account-service:/app
+    networks:
+      - npg-net
+    environment:
+      - SERVICE_NAME=account-service
+      - ENVIRONMENT=development
+      - DATABASE_NAME=npg-account-db
+      - DATABASE_URI=mongodb://npg-mongo-db:27017
+      - SERVICE_PORT=4000
+      - LOG_WITH_COLOR=true
+      - LOG_LEVEL=verbose
+
   npg-finance-service:
     container_name: npg-finance-service
     image: npg-finance-service
@@ -62,7 +103,7 @@ services:
     depends_on:
       - npg-mongo-db
     ports:
-      - 80:80
+      - 4001:4001
     volumes:
       - ../npg-finance-service:/app
     networks:
@@ -70,9 +111,9 @@ services:
     environment:
       - SERVICE_NAME=finance-service
       - ENVIRONMENT=development
-      - DATABASE_NAME=npg-mongo-db
+      - DATABASE_NAME=npg-finance-db
       - DATABASE_URI=mongodb://npg-mongo-db:27017
-      - SERVICE_PORT=80
+      - SERVICE_PORT=4001
       - LOG_WITH_COLOR=true
       - LOG_LEVEL=verbose
 
