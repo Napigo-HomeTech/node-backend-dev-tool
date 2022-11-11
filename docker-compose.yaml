@@ -83,6 +83,7 @@ services:
       - ../npg-account-service:/app
     networks:
       - npg-net
+      - npg-local-net # this service requrie to call googleapis.com which is why need to be in public network
     environment:
       - SERVICE_NAME=account-service
       - ENVIRONMENT=development
