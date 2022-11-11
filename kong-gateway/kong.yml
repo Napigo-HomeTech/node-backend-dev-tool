@@ -51,6 +51,7 @@ plugins:
       - Content-Type
       - Date
       - X-Auth-Token
+      - X-CSRF-Token
       exposed_headers:
       - X-Auth-Token
       credentials: true
